@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Convenios Bancarios Tesla Chile</title>
+  <title>Convenios Crediticios en Tesla Chile</title>
   <style>
     :root {
       color-scheme: dark;
@@ -102,7 +102,7 @@
 
     .bank-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      grid-template-columns: repeat(5, minmax(96px, 1fr));
       gap: 14px;
       margin-top: 28px;
     }
@@ -174,6 +174,10 @@
 
     .bank-button[data-bank="itau"] img {
       max-height: 58px;
+    }
+
+    .bank-button[data-bank="tanner"] .logo-set {
+      height: 54px;
     }
 
     .bank-button span {
@@ -413,7 +417,7 @@
 
     <section class="hero">
       <div>
-        <h1>Convenios Bancarios Tesla Chile</h1>
+        <h1>Convenios Crediticios en Tesla Chile</h1>
         <p class="lead">Selecciona un banco para revisar las alternativas vigentes de financiamiento y pago disponibles para clientes Tesla.</p>
 
         <div class="bank-grid" aria-label="Seleccionar banco">
@@ -435,6 +439,10 @@
               <img src="assets/banco-security-new.png" alt="Banco Security">
             </span>
             <span>3 opciones activas</span>
+          </button>
+          <button class="bank-button" type="button" data-bank="tanner" aria-pressed="false">
+            <span class="logo-set single"><img src="assets/tanner.jpg" alt="Tanner Crédito Automotriz"></span>
+            <span>1 opción activa</span>
           </button>
         </div>
 
@@ -513,9 +521,9 @@
         options: [
           {
             type: "Crédito automotriz",
-            promotion: "Tasa 0,99%",
+            promotion: "Tasa 0,99% + Wall Connector gratis",
             validity: "1 jun 2026 - 31 jul 2026",
-            notes: "Wall Connector de regalo + 5.000 millas LATAM contratando seguro.",
+            notes: "Wall Connector gratis + 5.000 millas LATAM contratando seguro.",
             how: "Con ejecutivo/a Santander, en piso."
           }
         ]
@@ -548,6 +556,22 @@
             validity: "16 jul 2026 - 31 ago 2026",
             notes: "Promoción activa para crédito de consumo Verde.",
             how: "Link UPAGO."
+          }
+        ]
+      },
+      tanner: {
+        name: "Tanner",
+        logos: [
+          { src: "assets/tanner.jpg", alt: "Tanner Crédito Automotriz" }
+        ],
+        window: "Vigente durante julio 2026",
+        options: [
+          {
+            type: "Crédito automotriz",
+            promotion: "Tasa 1,19% + Wall Connector gratis",
+            validity: "1 jul 2026 - 31 jul 2026",
+            notes: "Wall Connector gratis. Financiamiento de instalación del cargador. Seguro de desgravamen rebajado.",
+            how: "Gestionar con Tanner Crédito Automotriz durante julio."
           }
         ]
       }
