@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Convenios Bancarios Tesla Chile</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111111;
+      --panel: #1c1c1c;
+      --panel-strong: #242424;
+      --line: #333333;
+      --text: #f4f4f4;
+      --muted: #b7b7b7;
+      --soft: #858585;
+      --tesla: #e82127;
+      --ok: #37d67a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(232, 33, 39, 0.12), transparent 28%),
+        linear-gradient(135deg, #0d0d0d 0%, #171717 48%, #0f0f0f 100%);
+      color: var(--text);
+    }
+
+    .app {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 34px clamp(18px, 4vw, 56px) 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .tesla-mark {
+      height: 17px;
+      max-width: 150px;
+      object-fit: contain;
+      filter: invert(1);
+      opacity: 0.95;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(55, 214, 122, 0.32);
+      background: rgba(55, 214, 122, 0.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 18px rgba(55, 214, 122, 0.8);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.94fr) minmax(360px, 1.06fr);
+      gap: clamp(24px, 4vw, 54px);
+      align-items: start;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      max-width: 760px;
+      font-size: 72px;
+      line-height: 0.95;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 600px;
+      margin: 0 0 30px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.42;
+    }
+
+    .bank-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .bank-button {
+      min-height: 132px;
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text);
+      cursor: pointer;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .bank-button:hover,
+    .bank-button:focus-visible {
+      border-color: rgba(232, 33, 39, 0.8);
+      background: rgba(232, 33, 39, 0.1);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .bank-button[aria-pressed="true"] {
+      border-color: var(--tesla);
+      background: rgba(232, 33, 39, 0.16);
+    }
+
+    .logo-set {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .bank-button .logo-set {
+      width: 100%;
+      height: 48px;
+    }
+
+    .logo-set img {
+      object-fit: contain;
+    }
+
+    .logo-set.single img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .logo-set.duo {
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .logo-set.duo img {
+      max-width: 100%;
+      max-height: 23px;
+    }
+
+    .bank-button[data-bank="itau"] .logo-set {
+      height: 58px;
+    }
+
+    .bank-button[data-bank="itau"] img {
+      max-height: 58px;
+    }
+
+    .bank-button span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .detail {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(28, 28, 28, 0.86);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px clamp(18px, 3vw, 30px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .detail-logo-wrap {
+      width: 132px;
+      height: 58px;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .detail-logo-wrap .logo-set {
+      width: 100%;
+      height: 100%;
+    }
+
+    .detail-logo-wrap .logo-set.duo {
+      align-items: flex-start;
+    }
+
+    .detail-logo {
+      max-width: 132px;
+      max-height: 58px;
+      object-fit: contain;
+    }
+
+    .detail h2 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .count {
+      color: var(--muted);
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .option-card {
+      padding: clamp(18px, 3vw, 28px) clamp(18px, 3vw, 30px);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 16px;
+    }
+
+    .option-card:last-child {
+      border-bottom: 0;
+    }
+
+    .option-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .option-card h3 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.12;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .type {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .validity {
+      border: 1px solid rgba(232, 33, 39, 0.38);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 13px;
+      white-space: nowrap;
+      background: rgba(232, 33, 39, 0.09);
+    }
+
+    .info-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .info-toggle {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.055);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+      font-size: 14px;
+      padding: 11px 13px;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .info-toggle:hover,
+    .info-toggle:focus-visible,
+    .info-toggle[aria-expanded="true"] {
+      border-color: rgba(232, 33, 39, 0.7);
+      background: rgba(232, 33, 39, 0.12);
+      outline: none;
+    }
+
+    .info-panel {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .label {
+      color: var(--soft);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .footnote {
+      margin-top: 26px;
+      color: var(--soft);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 940px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 56px;
+      }
+
+      .lead {
+        margin-bottom: 10px;
+      }
+
+      .bank-grid {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding-top: 24px;
+      }
+
+      .topbar,
+      .detail-header,
+      .option-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .bank-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+      .lead {
+        font-size: 17px;
+      }
+
+      .bank-button {
+        min-height: 104px;
+      }
+
+      .validity,
+      .count,
+      .status-pill {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar" aria-label="Tesla Chile">
+      <img class="tesla-mark" src="assets/tesla-wordmark.png" alt="Tesla">
+      <div class="status-pill" aria-label="Promociones activas">
+        <span class="status-dot" aria-hidden="true"></span>
+        Promos activas al 20 jul 2026
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Convenios Bancarios Tesla Chile</h1>
+        <p class="lead">Selecciona un banco para revisar las alternativas vigentes de financiamiento y pago disponibles para clientes Tesla.</p>
+
+        <div class="bank-grid" aria-label="Seleccionar banco">
+          <button class="bank-button" type="button" data-bank="scotiabank" aria-pressed="true">
+            <span class="logo-set single"><img src="assets/scotiabank.png" alt="Scotiabank"></span>
+            <span>3 opciones activas</span>
+          </button>
+          <button class="bank-button" type="button" data-bank="itau" aria-pressed="false">
+            <span class="logo-set single"><img src="assets/itau.png" alt="Itaú"></span>
+            <span>1 opción activa</span>
+          </button>
+          <button class="bank-button" type="button" data-bank="santander" aria-pressed="false">
+            <span class="logo-set single"><img src="assets/santander.webp" alt="Santander Consumer"></span>
+            <span>1 opción activa</span>
+          </button>
+          <button class="bank-button" type="button" data-bank="biceSecurity" aria-pressed="false">
+            <span class="logo-set duo">
+              <img src="assets/banco-bice.gif" alt="Banco BICE">
+              <img src="assets/banco-security-new.png" alt="Banco Security">
+            </span>
+            <span>3 opciones activas</span>
+          </button>
+        </div>
+
+        <p class="footnote">Solo se consideran promociones activas. La columna de perfil cliente fue excluida del display.</p>
+      </div>
+
+      <aside class="detail" aria-live="polite" aria-label="Opciones del banco seleccionado">
+        <div class="detail-header">
+          <div class="detail-title">
+            <div class="detail-logo-wrap" id="detailLogos"></div>
+            <div>
+              <h2 id="bankName">Scotiabank</h2>
+              <div class="count" id="bankCount">3 opciones activas</div>
+            </div>
+          </div>
+          <div class="validity" id="bankWindow">Vigente hasta 31 jul 2026</div>
+        </div>
+        <div class="option-list" id="optionList"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const banks = {
+      scotiabank: {
+        name: "Scotiabank",
+        logos: [
+          { src: "assets/scotiabank.png", alt: "Scotiabank" }
+        ],
+        window: "Vigente hasta 31 jul 2026",
+        options: [
+          {
+            type: "Tarjeta de crédito",
+            promotion: "24 cuotas 0% interés",
+            validity: "1 jul 2026 - 31 jul 2026",
+            notes: "Tarjeta todas. Personal natural. Clientes nuevos o existentes. Contacto: carolina.alvarez@scotiabank.cl.",
+            how: "Link UPAGO. Si son clientes nuevos, gestionar con ejecutivo Scotiabank."
+          },
+          {
+            type: "Crédito de consumo",
+            promotion: "Hasta 60 meses con tasa 0,77%",
+            validity: "1 jul 2026 - 31 jul 2026",
+            notes: "Monto mínimo: $30MM. Contacto: carolina.alvarez@scotiabank.cl.",
+            how: "Ejecutivo Scotiabank: carolina.alvarez@scotiabank.cl."
+          },
+          {
+            type: "Crédito de consumo Intelligent",
+            promotion: "36 cuotas con tasa 0,77%",
+            validity: "1 jul 2026 - 31 jul 2026",
+            notes: "Mínimo $30MM. Permite pagar un cuotón del 50% al final, en el mes 36.",
+            how: "Revisar link informado para crédito de consumo Tesla o gestionar con ejecutivo Scotiabank."
+          }
+        ]
+      },
+      itau: {
+        name: "Itaú",
+        logos: [
+          { src: "assets/itau.png", alt: "Itaú" }
+        ],
+        window: "Vigente hasta 31 ago 2026",
+        options: [
+          {
+            type: "Tarjeta de crédito",
+            promotion: "48 cuotas 0% interés",
+            validity: "1 jul 2026 - 31 ago 2026",
+            notes: "Tarjeta Legend. Persona natural. Clientes nuevos o existentes.",
+            how: "Pago vía Link UPAGO. Para clientes nuevos, usar QR Itaú."
+          }
+        ]
+      },
+      santander: {
+        name: "Santander Consumer",
+        logos: [
+          { src: "assets/santander.webp", alt: "Santander Consumer" }
+        ],
+        window: "Vigente hasta 31 jul 2026",
+        options: [
+          {
+            type: "Crédito automotriz",
+            promotion: "Tasa 0,99%",
+            validity: "1 jun 2026 - 31 jul 2026",
+            notes: "Wall Connector de regalo + 5.000 millas LATAM contratando seguro.",
+            how: "Con ejecutivo/a Santander, en piso."
+          }
+        ]
+      },
+      biceSecurity: {
+        name: "BICE + Security",
+        logos: [
+          { src: "assets/banco-bice.gif", alt: "Banco BICE" },
+          { src: "assets/banco-security-new.png", alt: "Banco Security" }
+        ],
+        window: "Vigente hasta 31 ago 2026",
+        options: [
+          {
+            type: "Tarjeta de crédito",
+            promotion: "24 cuotas 0% interés",
+            validity: "16 jul 2026 - 31 ago 2026",
+            notes: "Tarjeta personal natural.",
+            how: "Link UPAGO."
+          },
+          {
+            type: "Tarjeta de crédito",
+            promotion: "25 a 48 cuotas con tasa 0,79%",
+            validity: "16 jul 2026 - 31 ago 2026",
+            notes: "Tarjeta personal natural.",
+            how: "Link UPAGO."
+          },
+          {
+            type: "Crédito de consumo Verde",
+            promotion: "Hasta 60 cuotas con tasa 0,79%",
+            validity: "16 jul 2026 - 31 ago 2026",
+            notes: "Promoción activa para crédito de consumo Verde.",
+            how: "Link UPAGO."
+          }
+        ]
+      }
+    };
+
+    const buttons = Array.from(document.querySelectorAll(".bank-button"));
+    const bankName = document.getElementById("bankName");
+    const bankCount = document.getElementById("bankCount");
+    const bankWindow = document.getElementById("bankWindow");
+    const detailLogos = document.getElementById("detailLogos");
+    const optionList = document.getElementById("optionList");
+
+    function optionLabel(count) {
+      return count === 1 ? "1 opción activa" : `${count} opciones activas`;
+    }
+
+    function logoMarkup(bank, className = "") {
+      const kind = bank.logos.length > 1 ? "duo" : "single";
+      const images = bank.logos.map((logo) => (
+        `<img class="detail-logo" src="${logo.src}" alt="${logo.alt}">`
+      )).join("");
+
+      return `<div class="logo-set ${kind} ${className}">${images}</div>`;
+    }
+
+    function renderBank(bankKey) {
+      const bank = banks[bankKey];
+      bankName.textContent = bank.name;
+      bankCount.textContent = optionLabel(bank.options.length);
+      bankWindow.textContent = bank.window;
+      detailLogos.innerHTML = logoMarkup(bank);
+
+      optionList.innerHTML = bank.options.map((option, index) => {
+        const notesId = `${bankKey}-${index}-notes`;
+        const howId = `${bankKey}-${index}-how`;
+
+        return `
+        <article class="option-card">
+          <div class="option-top">
+            <div>
+              <h3>${option.promotion}</h3>
+              <div class="type">${option.type}</div>
+            </div>
+            <div class="validity">${option.validity}</div>
+          </div>
+          <div class="info-actions">
+            <button class="info-toggle" type="button" aria-expanded="false" aria-controls="${notesId}" data-target="${notesId}">Más información</button>
+            <button class="info-toggle" type="button" aria-expanded="false" aria-controls="${howId}" data-target="${howId}">Pasos a seguir</button>
+          </div>
+          <div class="info-panel" id="${notesId}" hidden>
+            <div class="label">Más información</div>
+            <div class="value">${option.notes}</div>
+          </div>
+          <div class="info-panel" id="${howId}" hidden>
+            <div class="label">Pasos a seguir</div>
+            <div class="value">${option.how}</div>
+          </div>
+        </article>
+      `;
+      }).join("");
+
+      buttons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.bank === bankKey));
+      });
+    }
+
+    optionList.addEventListener("click", (event) => {
+      const trigger = event.target.closest(".info-toggle");
+      if (!trigger) return;
+
+      const panel = document.getElementById(trigger.dataset.target);
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+      trigger.setAttribute("aria-expanded", String(!isOpen));
+      panel.hidden = isOpen;
+    });
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => renderBank(button.dataset.bank));
+    });
+
+    renderBank("scotiabank");
+  </script>
+</body>
+</html>
