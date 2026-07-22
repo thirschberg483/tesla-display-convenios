@@ -102,7 +102,7 @@
 
     .bank-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(96px, 1fr));
+      grid-template-columns: repeat(6, minmax(88px, 1fr));
       gap: 14px;
       margin-top: 28px;
     }
@@ -177,6 +177,10 @@
     }
 
     .bank-button[data-bank="tanner"] .logo-set {
+      height: 54px;
+    }
+
+    .bank-button[data-bank="bci"] .logo-set {
       height: 54px;
     }
 
@@ -429,6 +433,10 @@
             <span class="logo-set single"><img src="assets/itau.png" alt="Itaú"></span>
             <span>1 opción activa</span>
           </button>
+          <button class="bank-button" type="button" data-bank="bci" aria-pressed="false">
+            <span class="logo-set single"><img src="assets/bci-logo.jpg" alt="BCI"></span>
+            <span>1 opción activa</span>
+          </button>
           <button class="bank-button" type="button" data-bank="santander" aria-pressed="false">
             <span class="logo-set single"><img src="assets/santander-consumer-new.gif" alt="Santander Consumer"></span>
             <span>1 opción activa</span>
@@ -505,10 +513,26 @@
         options: [
           {
             type: "Tarjeta de crédito",
-            promotion: "48 cuotas 0% interés",
+            promotion: "24, 36 o 48 cuotas 0% interés",
             validity: "1 jul 2026 - 31 ago 2026",
             notes: "Tarjeta Legend. Persona natural. Clientes nuevos o existentes.",
             how: "Pago vía Link UPAGO. Para clientes nuevos, usar QR Itaú."
+          }
+        ]
+      },
+      bci: {
+        name: "BCI",
+        logos: [
+          { src: "assets/bci-logo.jpg", alt: "BCI" }
+        ],
+        window: "Vigente hasta 31 dic 2026",
+        options: [
+          {
+            type: "Tarjeta de crédito",
+            promotion: "12 a 48 cuotas con tasa preferencial 0,49%",
+            validity: "20 jul 2026 - 31 dic 2026",
+            notes: "Tarjetas Premium - Personal - Clientes nuevos o existentes.",
+            how: "Pago vía link UPAGO."
           }
         ]
       },
