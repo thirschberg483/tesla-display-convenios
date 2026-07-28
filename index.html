@@ -102,7 +102,7 @@
 
     .bank-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(88px, 1fr));
+      grid-template-columns: repeat(3, minmax(130px, 1fr));
       gap: 14px;
       margin-top: 28px;
     }
@@ -181,6 +181,10 @@
     }
 
     .bank-button[data-bank="bci"] .logo-set {
+      height: 54px;
+    }
+
+    .bank-button[data-bank="bancoChile"] .logo-set {
       height: 54px;
     }
 
@@ -437,6 +441,13 @@
             <span class="logo-set single"><img src="assets/bci-logo.jpg" alt="BCI"></span>
             <span>1 opción activa</span>
           </button>
+          <button class="bank-button" type="button" data-bank="bancoChile" aria-pressed="false">
+            <span class="logo-set duo">
+              <img src="assets/banco-de-chile.jpg" alt="Banco de Chile">
+              <img src="assets/logo-edwards.jpg" alt="Banco Edwards Citi">
+            </span>
+            <span>2 opciones activas</span>
+          </button>
           <button class="bank-button" type="button" data-bank="santander" aria-pressed="false">
             <span class="logo-set single"><img src="assets/santander-consumer-new.gif" alt="Santander Consumer"></span>
             <span>1 opción activa</span>
@@ -536,6 +547,30 @@
           }
         ]
       },
+      bancoChile: {
+        name: "Banco de Chile + Edwards | Citi",
+        logos: [
+          { src: "assets/banco-de-chile.jpg", alt: "Banco de Chile" },
+          { src: "assets/logo-edwards.jpg", alt: "Banco Edwards Citi" }
+        ],
+        window: "Vigente hasta 31 ago 2026",
+        options: [
+          {
+            type: "Tarjeta de crédito",
+            promotion: "24 cuotas sin interés",
+            validity: "28 jul 2026 - 31 ago 2026",
+            notes: "",
+            how: ""
+          },
+          {
+            type: "Tarjeta de crédito",
+            promotion: "36 y 48 cuotas con tasa 0,79%",
+            validity: "28 jul 2026 - 31 ago 2026",
+            notes: "",
+            how: ""
+          }
+        ]
+      },
       santander: {
         name: "Santander Consumer",
         logos: [
@@ -631,6 +666,12 @@
       optionList.innerHTML = bank.options.map((option, index) => {
         const notesId = `${bankKey}-${index}-notes`;
         const howId = `${bankKey}-${index}-how`;
+        const hasNotes = Boolean((option.notes || "").trim());
+        const hasHow = Boolean((option.how || "").trim());
+        const actions = [
+          hasNotes ? `<button class="info-toggle" type="button" aria-expanded="false" aria-controls="${notesId}" data-target="${notesId}">Más información</button>` : "",
+          hasHow ? `<button class="info-toggle" type="button" aria-expanded="false" aria-controls="${howId}" data-target="${howId}">Pasos a seguir</button>` : ""
+        ].join("");
 
         return `
         <article class="option-card">
@@ -641,18 +682,15 @@
             </div>
             <div class="validity">${option.validity}</div>
           </div>
-          <div class="info-actions">
-            <button class="info-toggle" type="button" aria-expanded="false" aria-controls="${notesId}" data-target="${notesId}">Más información</button>
-            <button class="info-toggle" type="button" aria-expanded="false" aria-controls="${howId}" data-target="${howId}">Pasos a seguir</button>
-          </div>
-          <div class="info-panel" id="${notesId}" hidden>
+          ${actions ? `<div class="info-actions">${actions}</div>` : ""}
+          ${hasNotes ? `<div class="info-panel" id="${notesId}" hidden>
             <div class="label">Más información</div>
             <div class="value">${option.notes}</div>
-          </div>
-          <div class="info-panel" id="${howId}" hidden>
+          </div>` : ""}
+          ${hasHow ? `<div class="info-panel" id="${howId}" hidden>
             <div class="label">Pasos a seguir</div>
             <div class="value">${option.how}</div>
-          </div>
+          </div>` : ""}
         </article>
       `;
       }).join("");
