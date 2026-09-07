@@ -168,14 +168,6 @@
       max-height: 23px;
     }
 
-    .bank-button[data-bank="itau"] .logo-set {
-      height: 58px;
-    }
-
-    .bank-button[data-bank="itau"] img {
-      max-height: 58px;
-    }
-
     .bank-button[data-bank="tanner"] .logo-set {
       height: 54px;
     }
@@ -533,10 +525,6 @@
             <span class="logo-set single"><img src="assets/scotiabank-new.jpg" alt="Scotiabank"></span>
             <span>3 opciones activas</span>
           </button>
-          <button class="bank-button" type="button" data-bank="itau" aria-pressed="false">
-            <span class="logo-set single"><img src="assets/itau.png" alt="Itaú"></span>
-            <span>1 opción activa</span>
-          </button>
           <button class="bank-button" type="button" data-bank="bci" aria-pressed="false">
             <span class="logo-set single"><img src="assets/bci-logo.jpg" alt="BCI"></span>
             <span>1 opción activa</span>
@@ -550,7 +538,7 @@
           </button>
           <button class="bank-button" type="button" data-bank="santander" aria-pressed="false">
             <span class="logo-set single"><img src="assets/santander-consumer-new.gif" alt="Santander Consumer"></span>
-            <span>1 opción activa</span>
+            <span>2 opciones activas</span>
           </button>
           <button class="bank-button" type="button" data-bank="biceSecurity" aria-pressed="false">
             <span class="logo-set duo">
@@ -618,23 +606,6 @@
           }
         ]
       },
-      itau: {
-        name: "Itaú",
-        logos: [
-          { src: "assets/itau.png", alt: "Itaú" }
-        ],
-        window: "Vigente hasta 31 ago 2026",
-        options: [
-          {
-            type: "Tarjeta de crédito",
-            promotion: "24, 36 o 48 cuotas 0% interés",
-            validity: "1 jul 2026 - 31 ago 2026",
-            notes: "Tarjeta Legend. Persona natural. Clientes nuevos o existentes.",
-            how: "Pago vía Link UPAGO. Para clientes nuevos, usar QR Itaú.",
-            simulation: { rate: 0, months: 48, balloon: 30 }
-          }
-        ]
-      },
       bci: {
         name: "BCI",
         logos: [
@@ -687,11 +658,19 @@
         options: [
           {
             type: "Crédito automotriz",
-            promotion: "Tasa 0,99% + Wall Connector gratis",
+            promotion: "Tasa 0,99%",
             validity: "1 jun 2026 - 30 sep 2026",
-            notes: "Wall Connector gratis + 5.000 millas LATAM contratando seguro.",
+            notes: "Wall Connector se puede sumar al monto del crédito.",
             how: "Con ejecutivo/a Santander, en piso.",
             simulation: { rate: 0.99, months: 36, balloon: 30 }
+          },
+          {
+            type: "Crédito automotriz",
+            promotion: "Tasa 0,89% mensual",
+            validity: "1 jun 2026 - 30 sep 2026",
+            notes: "Solo contratando seguro.",
+            how: "Con ejecutivo/a Santander, en piso.",
+            simulation: { rate: 0.89, months: 36, balloon: 30 }
           }
         ]
       },
